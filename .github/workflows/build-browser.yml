@@ -27,7 +27,7 @@ jobs:
             latest_browser_tag: ${{ steps.gen_vars.outputs.latest_browser_tag }}
             node_version: ${{ steps.retrieve-node-version.outputs.node_version }}
         steps:
-            - name: Checkout repo
+            - name: Check out repo
               uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
             - name: Clone real repo
@@ -68,9 +68,8 @@ jobs:
             - setup
         env:
             _LATEST_BROWSER_TAG: ${{ needs.setup.outputs.latest_browser_tag }}
-            _NODE_VERSION: ${{ needs.setup.outputs.node_version }}
         steps:
-            - name: Checkout repo
+            - name: Check out repo
               uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
             - name: Clone real repo
@@ -233,6 +232,17 @@ jobs:
         steps:
             - name: Check out repo
               uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+            - name: Clone real repo
+              run: |
+                  git clone https://github.com/bitwarden/clients.git
+
+            - name: Setup repo
+              working-directory: clients
+              run: |
+                  git fetch --tags
+                  echo "Checking out ${{ env._LATEST_BROWSER_TAG }}"
+                  git checkout ${{ env._LATEST_BROWSER_TAG }}
 
             - name: Set up Node
               uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
