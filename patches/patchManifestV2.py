@@ -7,7 +7,9 @@ orig["name"] = "Sunsetvault"
 orig["short_name"] = "Sunsetvault"
 orig["author"] = "Sunset Edu. & Tech. Group and Bitwarden® community"
 orig["homepage_url"] = "https://github.com/SunsetMkt/Sunsetvault"
-del orig["__firefox__browser_specific_settings"]["gecko"]["id"]
+orig["__firefox__browser_specific_settings"]["gecko"][
+    "id"
+] = "{e24f0f46-f3ba-4d4e-a40d-2eee2aee41b7}"
 orig["description"] = (
     "Sunsetvault is an exclusive build of the popular open source password manager, designed for internal use by SETG."
 )
