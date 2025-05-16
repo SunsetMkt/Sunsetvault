@@ -309,5 +309,5 @@ jobs:
                   body: "${{ env._LATEST_BROWSER_TAG }} [Original Changelog](https://github.com/bitwarden/clients/releases/tag/${{ env._LATEST_BROWSER_TAG }})"
                   token: ${{ secrets.GITHUB_TOKEN }}
                   draft: false
-                  allowUpdates: true
+                  allowUpdates: false
                   makeLatest: true
