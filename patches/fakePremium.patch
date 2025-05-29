@@ -1,8 +1,8 @@
 diff --git a/libs/common/src/billing/services/account/billing-account-profile-state.service.ts b/libs/common/src/billing/services/account/billing-account-profile-state.service.ts
-index 654af40ffe..8c54eaaec2 100644
+index 654af40ffe..e1c61159a6 100644
 --- a/libs/common/src/billing/services/account/billing-account-profile-state.service.ts
 +++ b/libs/common/src/billing/services/account/billing-account-profile-state.service.ts
-@@ -57,8 +57,8 @@ export class DefaultBillingAccountProfileStateService implements BillingAccountP
+@@ -57,15 +57,15 @@ export class DefaultBillingAccountProfileStateService implements BillingAccountP
      await this.stateProvider.getUser(userId, BILLING_ACCOUNT_PROFILE_KEY_DEFINITION).update(
        (_) => {
          return {
@@ -13,3 +13,12 @@ index 654af40ffe..8c54eaaec2 100644
          };
        },
        {
+         shouldUpdate: (state) =>
+           state == null ||
+-          state.hasPremiumFromAnyOrganization !== hasPremiumFromAnyOrganization ||
+-          state.hasPremiumPersonally !== hasPremiumPersonally,
++          state.hasPremiumFromAnyOrganization !== true ||
++          state.hasPremiumPersonally !== true,
+       },
+     );
+   }
