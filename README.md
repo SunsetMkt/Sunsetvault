@@ -4,13 +4,21 @@ Builder for Sunsetvault extension.
 
 ## Get Sunsetvault
 
+### Firefox
+
 [![Mozilla Add-on Version](https://img.shields.io/amo/v/sunsetvault?logo=firefox)
 ](https://addons.mozilla.org/en-US/firefox/addon/sunsetvault/) (`dist-firefox.zip`)
 
-[![Chrome Web Store Version](https://img.shields.io/chrome-web-store/v/leedpmmbobncoipdjocgcbkmogekjkga?logo=googlechrome)
-](https://chromewebstore.google.com/detail/leedpmmbobncoipdjocgcbkmogekjkga) (`dist-chrome-mv3.zip`)
+### Chrome & Edge
 
-[![Edge Add-on Version](https://img.shields.io/badge/dynamic/json?label=edge%20add-on&prefix=v&query=%24.version&url=https%3A%2F%2Fmicrosoftedge.microsoft.com%2Faddons%2Fgetproductdetailsbycrxid%2Fnbnflbnmlablihnpobeakamhjckamaaj&logo=microsoftedge&logoColor=%230078D7)](https://microsoftedge.microsoft.com/addons/detail/nbnflbnmlablihnpobeakamhjckamaaj) (`dist-edge-mv3.zip`)
+[![Chrome Web Store Version](https://img.shields.io/chrome-web-store/v/leedpmmbobncoipdjocgcbkmogekjkga?logo=googlechrome)
+](https://chromewebstore.google.com/detail/leedpmmbobncoipdjocgcbkmogekjkga) (`dist-chrome.zip`)
+
+### Edge (Discontinued)
+
+Edge Add-on is no longer supported because `Your extension, including its listing, is too similar to another product. You should offer unique and distinct value within your Extensions.`
+
+[![Edge Add-on Version](https://img.shields.io/badge/dynamic/json?label=edge%20add-on&prefix=v&query=%24.version&url=https%3A%2F%2Fmicrosoftedge.microsoft.com%2Faddons%2Fgetproductdetailsbycrxid%2Fnbnflbnmlablihnpobeakamhjckamaaj&logo=microsoftedge&logoColor=%230078D7)](https://microsoftedge.microsoft.com/addons/detail/nbnflbnmlablihnpobeakamhjckamaaj) (`dist-edge.zip`)
 
 ## Description
 
