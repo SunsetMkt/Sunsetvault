@@ -18,8 +18,6 @@ Builder for Sunsetvault extension.
 
 Edge Add-on is no longer supported because `Your extension, including its listing, is too similar to another product. You should offer unique and distinct value within your Extensions.`
 
-[![Edge Add-on Version](https://img.shields.io/badge/dynamic/json?label=edge%20add-on&prefix=v&query=%24.version&url=https%3A%2F%2Fmicrosoftedge.microsoft.com%2Faddons%2Fgetproductdetailsbycrxid%2Fnbnflbnmlablihnpobeakamhjckamaaj&logo=microsoftedge&logoColor=%230078D7)](https://microsoftedge.microsoft.com/addons/detail/nbnflbnmlablihnpobeakamhjckamaaj) (`dist-edge.zip`)
-
 ## Description
 
 Sunsetvault is an exclusive build of the popular open source password manager, designed for internal use by SETG.
