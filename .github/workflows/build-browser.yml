@@ -1,4 +1,7 @@
 # https://github.com/bitwarden/clients/blob/main/.github/workflows/build-browser.yml
+# This workflow will run in the context of the source of the PR.
+# On a PR from a fork, the workflow will not have access to secrets, and so any parts of the build that require secrets will not run.
+# If additional artifacts are needed, the failed "build-browser-target.yml" workflow held up by the check-run should be re-run.
 name: Build Browser
 
 on:
@@ -176,10 +179,6 @@ jobs:
                   FILES=$(find . -maxdepth 1 -type f)
                   for FILE in $FILES; do cp "$FILE" browser-source/; done
 
-                  # Copy patches to the Browser source directory
-                  mkdir -p browser-source/patches
-                  cp -r patches/* browser-source/patches
-
                   # Copy apps/browser to the Browser source directory
                   mkdir -p browser-source/apps/browser
                   cp -r apps/browser/* browser-source/apps/browser
@@ -269,6 +268,29 @@ jobs:
             - name: NPM setup
               run: npm ci
               working-directory: browser-source/
+
+            - name: Check source file size
+              if: ${{ startsWith(matrix.name, 'firefox') }}
+              run: |
+                  # Declare variable as indexed array
+                  declare -a FILES
+
+                  # Search for source files that are greater than 5M
+                  TARGET_DIR='./browser-source/apps/browser'
+                  while IFS=' ' read -r RESULT; do
+                      FILES+=("$RESULT")
+                  done < <(find $TARGET_DIR -size +5M)
+
+                  # Validate results and provide messaging
+                  if [[ ${#FILES[@]} -ne 0 ]]; then
+                      echo "File(s) exceeds size limit: 5MB"
+                      for FILE in ${FILES[@]}; do
+                          echo "- $(du --si $FILE)"
+                      done
+                      echo "ERROR Firefox rejects extension uploads that contain files larger than 5MB"
+                      # Invoke failure
+                      # exit 1
+                  fi
 
             - name: Build extension
               run: npm run ${{ matrix.npm_command }}
