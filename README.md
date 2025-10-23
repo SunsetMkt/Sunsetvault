@@ -7,16 +7,12 @@ Builder for Sunsetvault extension.
 ### Firefox
 
 [![Mozilla Add-on Version](https://img.shields.io/amo/v/sunsetvault?logo=firefox)
-](https://addons.mozilla.org/en-US/firefox/addon/sunsetvault/) (`dist-firefox.zip`)
+](https://addons.mozilla.org/en-US/firefox/addon/sunsetvault/) (`dist-firefox.zip`) [Mozilla Add-on](https://addons.mozilla.org/en-US/firefox/addon/sunsetvault/)
 
-### Chrome & Edge
+### Chrome & Edge & Brave
 
 [![Chrome Web Store Version](https://img.shields.io/chrome-web-store/v/leedpmmbobncoipdjocgcbkmogekjkga?logo=googlechrome)
-](https://chromewebstore.google.com/detail/leedpmmbobncoipdjocgcbkmogekjkga) (`dist-chrome.zip`)
-
-### Edge (Discontinued)
-
-Edge Add-on is no longer supported because `Your extension, including its listing, is too similar to another product. You should offer unique and distinct value within your Extensions.`
+](https://chromewebstore.google.com/detail/leedpmmbobncoipdjocgcbkmogekjkga) (`dist-chrome.zip`) [Chrome Web Store](https://chromewebstore.google.com/detail/leedpmmbobncoipdjocgcbkmogekjkga)
 
 ## Description
 
@@ -31,48 +27,18 @@ You may also check its [upstream source](https://github.com/bitwarden/clients) a
 ## Development Notice
 
 > We have changed the icons because of [TRADEMARK GUIDELINES](https://github.com/bitwarden/server/blob/main/TRADEMARK_GUIDELINES.md).
-
-> We have changed the name because of DMCA Notice.
+>
+> We have changed the name because of DMCA Notice from `takedownreporting.com`.
 
 Run the workflow and download the releases.
 
 **For beginners, it's always recommended to use the latest official build of your password manager.**
 
-To load the built extension on Chromium-based browsers, [load an unpacked extension](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked) or [self-hosting Chromium extensions](https://www.meziantou.net/self-hosting-chromium-extensions.htm).
+To load the unpacked extension on Chromium-based browsers, [load an unpacked extension](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked) or [self-hosting Chromium extensions](https://www.meziantou.net/self-hosting-chromium-extensions.htm).
 
-```plaintext
-From: Legal Notice <dmcanotice@mozilla.com>
-Date: Wed, Nov 27, 2024 at 4:01 PM
-Subject: Re: A new Mozilla Copyright/Trademark infringement report has been received
-To: DMCA Notice <dmcanotice@mozilla.com>
+## Similar projects
 
-
-Owner name
-Bitwarden
-Name
-Poornima R
-Relationship
-org
-Email address
-domains@takedownreporting.com
-Mailing address
-Bitwarden, Inc. 1 N. Calle Cesar Chavez, Suite 102. Santa Barbara, CA 93103 USA
-Username
-Phone number
-Category
-trademark
-Trademark Registered
-ES
-Registration Number
-1563326
-Additional Registered Trademarks
-URL
-https://addons.mozilla.org/en-US/firefox/addon/[REMOVED]/
-Description
-The above-mentioned URL is using naming conventions, logos, and images infringing on Bitwarden's trademark whose registration number is 6227472 (USPTO) to host a phishing web page which is creating a risk for the entity’s people, assets, customers, operations, and reputation. the domain hosting phishing website kindly suspend this fraudulent domain ASAP Due to the suspicious substring match of the URLs and webpage appearance, it appears the domain is attempting to illegitimately impersonate our client Bitwarden.
-Additional Details
-Signature
-TRUE
-Authorized Content
-bitwarden.eu
-```
+-   [vaultwarden](https://github.com/dani-garcia/vaultwarden)
+-   [Keyguard](https://github.com/AChep/keyguard-app)
+-   [BitwardenPatch](https://github.com/leafmoes/BitwardenPatch)
+-   [wardens-key](https://github.com/cylind/wardens-key)
