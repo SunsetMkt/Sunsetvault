@@ -5,26 +5,26 @@ on:
   pull_request_target:
     types: [opened, synchronize]
     branches-ignore:
-      - 'l10n_master'
-      - 'cf-pages'
+      - "l10n_master"
+      - "cf-pages"
     paths:
-      - 'apps/browser/**'
-      - 'libs/**'
-      - '*'
-      - '!*.md'
-      - '!*.txt'
+      - "apps/browser/**"
+      - "libs/**"
+      - "*"
+      - "!*.md"
+      - "!*.txt"
   push:
     branches:
-      - 'main'
-      - 'rc'
-      - 'hotfix-rc-browser'
+      - "main"
+      - "rc"
+      - "hotfix-rc-browser"
     paths:
-      - 'apps/browser/**'
-      - 'libs/**'
-      - '*'
-      - '!*.md'
-      - '!*.txt'
-      - '.github/workflows/build-browser.yml'
+      - "apps/browser/**"
+      - "libs/**"
+      - "*"
+      - "!*.md"
+      - "!*.txt"
+      - ".github/workflows/build-browser.yml"
   workflow_call:
     inputs: {}
   workflow_dispatch:
@@ -75,7 +75,6 @@ jobs:
           NODE_VERSION=${NODE_NVMRC/v/''}
           echo "node_version=$NODE_VERSION" >> $GITHUB_OUTPUT
 
-
   locales-test:
     name: Locales Test
     runs-on: ubuntu-22.04
@@ -92,28 +91,27 @@ jobs:
 
       - name: Testing locales - extName length
         run: |
-         found_error=false
+          found_error=false
 
-         echo "Locales Test"
-         echo "============"
-         echo "extName string must be 40 characters or less"
-         echo
-         for locale in $(ls src/_locales/); do
-           string_length=$(jq '.extName.message | length' src/_locales/$locale/messages.json)
-           if [[ $string_length -gt 40 ]]; then
-             echo "$locale: $string_length"
-             found_error=true
-           fi
-         done
+          echo "Locales Test"
+          echo "============"
+          echo "extName string must be 40 characters or less"
+          echo
+          for locale in $(ls src/_locales/); do
+            string_length=$(jq '.extName.message | length' src/_locales/$locale/messages.json)
+            if [[ $string_length -gt 40 ]]; then
+              echo "$locale: $string_length"
+              found_error=true
+            fi
+          done
 
-         if $found_error; then
-           echo
-           echo "Please fix 'extName' for the locales listed above."
-           exit 1
-         else
-           echo "Test passed!"
-         fi
-
+          if $found_error; then
+            echo
+            echo "Please fix 'extName' for the locales listed above."
+            exit 1
+          else
+            echo "Test passed!"
+          fi
 
   build-source:
     name: Build browser source
@@ -133,8 +131,8 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
         with:
-          cache: 'npm'
-          cache-dependency-path: '**/package-lock.json'
+          cache: "npm"
+          cache-dependency-path: "**/package-lock.json"
           node-version: ${{ env._NODE_VERSION }}
 
       - name: Print environment
@@ -175,7 +173,6 @@ jobs:
           name: browser-source-${{ env._BUILD_NUMBER }}.zip
           path: browser-source.zip
           if-no-files-found: error
-
 
   build:
     name: Build
@@ -219,8 +216,8 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
         with:
-          cache: 'npm'
-          cache-dependency-path: '**/package-lock.json'
+          cache: "npm"
+          cache-dependency-path: "**/package-lock.json"
           node-version: ${{ env._NODE_VERSION }}
 
       - name: Print environment
@@ -271,7 +268,6 @@ jobs:
           path: browser-source/apps/browser/dist/${{ matrix.archive_name }}
           if-no-files-found: error
 
-
   build-safari:
     name: Build Safari
     runs-on: macos-13
@@ -290,8 +286,8 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
         with:
-          cache: 'npm'
-          cache-dependency-path: '**/package-lock.json'
+          cache: "npm"
+          cache-dependency-path: "**/package-lock.json"
           node-version: ${{ env._NODE_VERSION }}
 
       - name: Print environment
@@ -444,7 +440,6 @@ jobs:
           crowdin_branch_name: main
           upload_sources: true
           upload_translations: false
-
 
   check-failures:
     name: Check for failures

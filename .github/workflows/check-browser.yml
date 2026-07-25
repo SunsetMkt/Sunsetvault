@@ -1,0 +1,97 @@
+name: 1. Check Browser
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "Force trigger build of latest browser tag"
+        type: boolean
+        required: false
+        default: false
+
+permissions:
+  contents: write
+  actions: write
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  check:
+    name: Check for new browser release
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Print inputs
+        run: echo "force=${{ inputs.force }}"
+
+      - name: Checkout repo
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Get latest upstream browser tag
+        id: get_tag
+        run: |
+          git ls-remote --tags --sort=-version:refname https://github.com/bitwarden/clients.git > /tmp/upstream-tags.txt
+          LATEST_TAG=$(awk '/browser/ {sub("refs/tags/", "", $2); print $2; exit}' /tmp/upstream-tags.txt)
+          echo "latest_tag=$LATEST_TAG" >> $GITHUB_OUTPUT
+          echo "Latest upstream browser tag: $LATEST_TAG"
+
+      - name: Read stored tag
+        id: read_stored
+        run: |
+          if [ -f latest_browser_tag.txt ]; then
+            STORED_TAG=$(cat latest_browser_tag.txt)
+          else
+            STORED_TAG=""
+          fi
+          echo "stored_tag=$STORED_TAG" >> $GITHUB_OUTPUT
+          echo "Stored tag: '$STORED_TAG'"
+
+      - name: Compare tags
+        id: compare
+        run: |
+          LATEST="${{ steps.get_tag.outputs.latest_tag }}"
+          STORED="${{ steps.read_stored.outputs.stored_tag }}"
+          FORCE="${{ inputs.force }}"
+
+          echo "latest_browser_tag=$LATEST" >> $GITHUB_OUTPUT
+
+          if [ "$FORCE" = "true" ]; then
+            echo "Force rebuild requested for tag: $LATEST"
+            echo "is_new=true" >> $GITHUB_OUTPUT
+            if [ "$LATEST" != "$STORED" ] && [ -n "$LATEST" ]; then
+              echo "$LATEST" > latest_browser_tag.txt
+            fi
+          elif [ "$LATEST" != "$STORED" ] && [ -n "$LATEST" ]; then
+            echo "New tag detected: $LATEST (was: $STORED)"
+            echo "is_new=true" >> $GITHUB_OUTPUT
+            echo "$LATEST" > latest_browser_tag.txt
+          else
+            echo "No new tag. Current: $STORED"
+            echo "is_new=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit updated tag file
+        if: steps.compare.outputs.is_new == 'true'
+        run: |
+          if git ls-files --error-unmatch latest_browser_tag.txt &>/dev/null && git diff --quiet latest_browser_tag.txt; then
+            echo "Tag file unchanged, skipping commit."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add latest_browser_tag.txt
+          git commit -m "chore: track latest browser tag ${{ steps.compare.outputs.latest_browser_tag }}"
+          git push
+
+      - name: Trigger build workflow
+        if: steps.compare.outputs.is_new == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          echo "Triggering: build-browser.yml tag=${{ steps.compare.outputs.latest_browser_tag }}"
+          gh workflow run build-browser.yml \
+            --ref main \
+            -f tag="${{ steps.compare.outputs.latest_browser_tag }}"

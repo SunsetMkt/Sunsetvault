@@ -1,0 +1,122 @@
+name: 3. Release Browser
+
+on:
+  workflow_call:
+    inputs:
+      tag:
+        required: true
+        type: string
+        description: "Upstream Bitwarden browser release tag (e.g. browser-v2025.1.0)"
+      run_id:
+        required: true
+        type: string
+        description: "Build workflow run ID to download artifacts from"
+  workflow_dispatch:
+    inputs:
+      tag:
+        required: true
+        type: string
+        description: "Upstream Bitwarden browser release tag (e.g. browser-v2025.1.0)"
+      run_id:
+        required: true
+        type: string
+        description: "Build workflow run ID to download artifacts from"
+
+permissions:
+  contents: write # To Release
+  actions: read # To download artifacts from another run
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Print inputs
+        run: |
+          echo "tag=${{ inputs.tag }}"
+          echo "run_id=${{ inputs.run_id }}"
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
+        with:
+          run-id: ${{ inputs.run_id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: artifacts
+
+      - name: List downloaded artifacts
+        run: find artifacts -type f | sort
+
+      - name: Install strip-nondeterminism
+        run: sudo apt-get install -y strip-nondeterminism
+
+      - name: Normalize artifacts
+        run: |
+          mkdir -p reproducible
+          for f in artifacts/*/*.zip; do
+            BASENAME=$(basename "$f")
+            echo "Normalizing: $BASENAME"
+            cp "$f" "reproducible/${BASENAME}"
+            strip-nondeterminism "reproducible/${BASENAME}"
+          done
+          echo "--- Reproducible artifacts ---"
+          ls -la reproducible/
+
+      - name: Compute SHA256 hashes
+        id: compute_hash
+        run: |
+          {
+            echo "### Build Artifacts"
+            echo ""
+            echo "| Artifact | SHA256 |"
+            echo "|----------|--------|"
+          } >> $GITHUB_STEP_SUMMARY
+
+          HASH_OUTPUT="## Build Artifacts\n\n| Artifact | SHA256 |\n|----------|--------|"
+
+          for f in reproducible/*.zip; do
+            FILENAME=$(basename "$f")
+            HASH=$(sha256sum "$f" | awk '{print $1}')
+            echo "| ${FILENAME} | \`${HASH}\` |" >> $GITHUB_STEP_SUMMARY
+            HASH_OUTPUT="${HASH_OUTPUT}\n| ${FILENAME} | \`${HASH}\` |"
+          done
+
+          {
+            echo "hash_table<<EOF"
+            echo -e "$HASH_OUTPUT"
+            echo "EOF"
+          } >> $GITHUB_OUTPUT
+          echo "Output: hash_table"
+          echo -e "$HASH_OUTPUT"
+
+      - name: Check if release exists
+        id: check_release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view "${{ inputs.tag }}" --repo ${{ github.repository }} &>/dev/null; then
+            echo "Release ${{ inputs.tag }} already exists, skipping."
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "Release ${{ inputs.tag }} does not exist, will create."
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create release
+        if: steps.check_release.outputs.exists == 'false'
+        uses: ncipollo/release-action@2c591bcc8ecdcd2db72b97d6147f871fcd833ba5 # v1.14.0
+        with:
+          artifacts: "reproducible/*"
+          tag: "${{ inputs.tag }}"
+          name: "${{ inputs.tag }}"
+          body: |
+            ${{ steps.compute_hash.outputs.hash_table }}
+
+            [Original Changelog](https://github.com/bitwarden/clients/releases/tag/${{ inputs.tag }})
+          token: ${{ secrets.GITHUB_TOKEN }}
+          draft: false
+          allowUpdates: false
+          makeLatest: true

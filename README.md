@@ -38,7 +38,7 @@ To load the unpacked extension on Chromium-based browsers, [load an unpacked ext
 
 ## Similar projects
 
--   [vaultwarden](https://github.com/dani-garcia/vaultwarden)
--   [Keyguard](https://github.com/AChep/keyguard-app)
--   [BitwardenPatch](https://github.com/leafmoes/BitwardenPatch)
--   [wardens-key](https://github.com/cylind/wardens-key)
+- [vaultwarden](https://github.com/dani-garcia/vaultwarden)
+- [Keyguard](https://github.com/AChep/keyguard-app)
+- [BitwardenPatch](https://github.com/leafmoes/BitwardenPatch)
+- [wardens-key](https://github.com/cylind/wardens-key)
