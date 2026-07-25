@@ -14,6 +14,8 @@ Builder for Sunsetvault extension.
 [![Chrome Web Store Version](https://img.shields.io/chrome-web-store/v/leedpmmbobncoipdjocgcbkmogekjkga?logo=googlechrome)
 ](https://chromewebstore.google.com/detail/leedpmmbobncoipdjocgcbkmogekjkga) (`dist-chrome.zip`) [Chrome Web Store](https://chromewebstore.google.com/detail/leedpmmbobncoipdjocgcbkmogekjkga)
 
+> **Edge users:** The extension previously published on the Microsoft Edge Add-ons store has been deprecated due to Edge review rejection
+
 ## Description
 
 Sunsetvault is an exclusive build of the popular open source password manager, designed for internal use by SETG.
